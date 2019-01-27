@@ -58,7 +58,7 @@
                                      (text (format "Vertical Bias (1, ~a) " (max-vbias)) 12 "black")
                                      (text (format "Horizontal Bias (0, ~a)" (max-hbias)) 12 "black"))))))
 ;#|
-(define line (make-parameter (* 2 (sub1 (length palette)))))
+(define line (make-parameter (* 2 (length palette))))
 (big-bang (make-fire 100 (* 2 (length palette)))
   [on-tick (λ (lst) (foldl (λ (i res) (fire-spread res i)) lst (range (* 2 (sub1 (length palette))) -1 -1))) 1/24]
   [to-draw (λ (lst) (render-fire lst 5))]
