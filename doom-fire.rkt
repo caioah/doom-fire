@@ -65,7 +65,6 @@
   [to-draw (λ (lst) (render-fire lst 5))]
   ;[record? #t]
   [on-key (λ (lst ev)
-            (writeln ev)
             (cond [(key=? ev "up") (max-decay (add1 (max-decay)))]
                   [(key=? ev "down") (max-decay (max 1 (sub1 (max-decay))))]
                   [(key=? ev "right") (max-hbias (add1 (max-hbias)))]
