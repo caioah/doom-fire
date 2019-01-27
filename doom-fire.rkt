@@ -5,6 +5,7 @@
 (define max-hbias (make-parameter 2))
 (define max-vbias (make-parameter 1))
 (define apply-bias (make-parameter +))
+(define wind (make-parameter '+))
 (define palette
   (list (make-color 7 7 7)
         (make-color 31 7 7)
@@ -56,13 +57,15 @@
   (apply above (append (map (λ (row) (apply beside (map (λ (x) (square sz "solid" (list-ref palette x))) row))) lst)
                        (list (beside (text (format "Decay (~a, ~a) " (min-decay) (max-decay)) 12 "black")
                                      (text (format "Vertical Bias (1, ~a) " (max-vbias)) 12 "black")
-                                     (text (format "Horizontal Bias (0, ~a)" (max-hbias)) 12 "black"))))))
+                                     (text (format "Horizontal Bias (0, ~a) " (max-hbias)) 12 "black")
+                                     (text (format "Wind ~a" (wind)) 12 "black"))))))
 ;#|
 (big-bang (make-fire 100 (* 2 (length palette)))
   [on-tick (λ (lst) (foldl (λ (i res) (fire-spread res i)) lst (range (* 2 (sub1 (length palette))) -1 -1))) 1/24]
   [to-draw (λ (lst) (render-fire lst 5))]
   ;[record? #t]
   [on-key (λ (lst ev)
+            (writeln ev)
             (cond [(key=? ev "up") (max-decay (add1 (max-decay)))]
                   [(key=? ev "down") (max-decay (max 1 (sub1 (max-decay))))]
                   [(key=? ev "right") (max-hbias (add1 (max-hbias)))]
@@ -71,6 +74,6 @@
                   [(key=? ev "next") (max-vbias (max 1 (sub1 (max-vbias))))]
                   [(key=? ev "\b") (min-decay (max 0 (sub1 (min-decay))))]
                   [(key=? ev " ") (min-decay (min (add1 (min-decay)) (sub1 (max-decay))))]
-                  [(or (key=? ev "+") (key=? ev "add")) (apply-bias +)]
-                  [(or (key=? ev "-") (key=? ev "subtract")) (apply-bias -)]) lst)])
+                  [(or (key=? ev "+") (key=? ev "add")) (apply-bias +) (wind '+)]
+                  [(or (key=? ev "-") (key=? ev "subtract")) (apply-bias -) (wind '-)]) lst)])
 ;|#  
